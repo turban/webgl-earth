@@ -1,0 +1,14 @@
+body {
+	margin: 0;
+	overflow: hidden;
+	background-color: #000;
+	height: 100%;
+}
+
+#slider {
+	position: fixed;
+	left: 50px;
+	top: 50px;
+	bottom: 50px;
+	height: auto;
+}
