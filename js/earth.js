@@ -1,7 +1,5 @@
 $(function() {
 
-    //var stats = initStats();
-
 	// Scene size
 	var width  = window.innerWidth,
 		height = window.innerHeight;
@@ -34,57 +32,29 @@ $(function() {
 	light.position.set(5,3,5);
 	scene.add(light);
 
-    // the first argument of THREE.SphereGeometry is the radius, the second argument is
-    // the segmentsWidth, and the third argument is the segmentsHeight.  Increasing the 
-    // segmentsWidth and segmentsHeight will yield a more perfect circle, but will degrade
-    // rendering performance
-    // http://www.html5canvastutorials.com/three/html5-canvas-webgl-sphere-with-three-js/
-
     var sphere = createSphere(radius, segments, segments);
+	sphere.rotation.y = 3;
 	scene.add(sphere)
 
     var clouds = createClouds(radius, segments, segments);
+	clouds.rotation.y = 3;
 	scene.add(clouds)
 
 	var stars = createStars();
 	scene.add(stars);
 
+	var controls = new THREE.TrackballControls( camera );
 
-    var step = 0;
-
-	// Setup Control GUI
-	var controls = new function () {
-		this.radius = radius;
-        this.segments = segments;
-
-		this.redraw = function () {
-			scene.remove(sphere);
-			sphere = createSphere(controls.radius, controls.segments, controls.segments);
-			scene.add(sphere);
-        };
-    }
-
-    /*
-	var gui = new dat.GUI();
-	gui.add(controls, 'radius', 1, 400).onChange(controls.redraw);
-	gui.add(controls, 'segments', 1, 100).onChange(controls.redraw);
-	*/
+    var step = 3;
 
 	render();
 
 	function render() {
-		//stats.update();
-		sphere.rotation.y = step += 0.001;
-		clouds.rotation.y = step += 0.001;		
+		controls.update();
+		sphere.rotation.y += 0.0005;
+		clouds.rotation.y += 0.0005;		
 		requestAnimationFrame(render);
 		renderer.render(scene, camera);
-	}
-
-	function initStats() {
-		var stats = new Stats();
-		stats.setMode(0); // 0: fps, 1: ms
-		$("#stats").append(stats.domElement);
-		return stats;
 	}
 
 	function createSphere(radius, widthSegments, heightSegments) {
@@ -102,7 +72,7 @@ $(function() {
 
 	function createClouds(radius, widthSegments, heightSegments) {
 		return new THREE.Mesh(
-			new THREE.SphereGeometry(radius + 0.003, widthSegments, heightSegments),
+			new THREE.SphereGeometry(radius + 0.003, widthSegments, heightSegments),			
 			new THREE.MeshPhongMaterial({
 				map:         THREE.ImageUtils.loadTexture('images/fair_clouds_4k.neuquant.png'),
 				transparent: true
@@ -119,7 +89,6 @@ $(function() {
 			})
 		);
 	}
-
 
 });
 
