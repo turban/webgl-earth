@@ -1,6 +1,13 @@
 // Created by Bjorn Sandvik - thematicmapping.org
 (function () {
 
+	var webglEl = document.getElementById('webgl');
+
+	if (!Detector.webgl) {
+		Detector.addGetWebGLMessage(webglEl);
+		return;
+	}
+
 	var width  = window.innerWidth,
 		height = window.innerHeight;
 
@@ -36,7 +43,7 @@
 
 	var controls = new THREE.TrackballControls(camera);
 
-	document.getElementById('webgl').appendChild(renderer.domElement);
+	webglEl.appendChild(renderer.domElement);
 
 	render();
 
