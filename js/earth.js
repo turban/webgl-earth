@@ -76,9 +76,9 @@
 		
 		//update line
 		var r = 1.1*radius;
-		line.geometry.vertices[1].x  = r * Math.cos(controls.lat*Math.PI/180.0)*Math.cos(controls.lon*Math.PI/180.0);
+		line.geometry.vertices[1].x  = r * Math.cos(controls.lat*Math.PI/180.0)*Math.cos(-controls.lon*Math.PI/180.0);
 		line.geometry.vertices[1].y  = r * Math.sin(controls.lat*Math.PI/180.0);
-		line.geometry.vertices[1].z  = r * Math.cos(controls.lat*Math.PI/180.0)*Math.sin(controls.lon*Math.PI/180.0);
+		line.geometry.vertices[1].z  = r * Math.cos(controls.lat*Math.PI/180.0)*Math.sin(-controls.lon*Math.PI/180.0);
 		line.geometry.verticesNeedUpdate = true;
 		
 		requestAnimationFrame(render);
