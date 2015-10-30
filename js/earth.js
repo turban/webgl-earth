@@ -11,6 +11,19 @@
 	var width  = window.innerWidth,
 		height = window.innerHeight;
 
+
+
+	//CONTROLS
+	var controls = new function(){
+			this.lat = 0;
+			this.lon = 0;
+		};
+	
+	var gui = new dat.GUI();
+	gui.add( controls, 'lat', -90, 90);
+	gui.add( controls, 'lon', -180, 180);
+
+
 	// Earth params
 	var radius   = 0.5,
 		segments = 32,
@@ -38,16 +51,36 @@
 	var stars = createStars(90, 64);
 	scene.add(stars);
 
-	var controls = new THREE.TrackballControls(camera);
+
+	var lineGeom = new THREE.Geometry();
+	lineGeom.vertices.push(
+		new THREE.Vector3( 0, 0, 0 ),
+		new THREE.Vector3( 0, 0, 30 )	
+	);
+
+	var line = new THREE.Line( lineGeom, new THREE.LineBasicMaterial({color: 0xffffff}) );
+	
+	scene.add( line );
+	
+
+
+	var cameraControls = new THREE.TrackballControls(camera);
 
 	webglEl.appendChild(renderer.domElement);
 
 	render();
 
 	function render() {
-		controls.update();
-		sphere.rotation.y += 0.0005;
-
+		cameraControls.update();
+		
+		
+		//update line
+		var r = 1.1*radius;
+		line.geometry.vertices[1].x  = r * Math.cos(controls.lat*Math.PI/180.0)*Math.cos(controls.lon*Math.PI/180.0);
+		line.geometry.vertices[1].y  = r * Math.sin(controls.lat*Math.PI/180.0);
+		line.geometry.vertices[1].z  = r * Math.cos(controls.lat*Math.PI/180.0)*Math.sin(controls.lon*Math.PI/180.0);
+		line.geometry.verticesNeedUpdate = true;
+		
 		requestAnimationFrame(render);
 		renderer.render(scene, camera);
 	}
